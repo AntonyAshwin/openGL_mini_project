@@ -5,6 +5,7 @@
 
 float bspd=0.08; // block dx value
 char name[25];
+
 float b1x=60.0,b1y=0;//block 1 init position
 float hm=0.5;//copter moving dy value
 int i=0,sci=1;float scf=1; // for increment score score_int score_flag
@@ -17,10 +18,10 @@ int level=1,lflag=1,wflag=1; //level_flag & welcome_flag init w/ 1void init(void
 void init(void){
 	srand(time(0));
 	b1y=(rand()%45)+10;//b/w 10 to 44
-	glClearColor (0.0, 0.0, 0.0, 0.0);
+	glClearColor (0.0, 0.0, 0.7, 0.3);   //  modified this
 	glShadeModel (GL_SMOOTH);
 	glLoadIdentity ();
-	glOrtho(0.0, 100.0, 0.0, 100.0, -1.0 , .0);
+	glOrtho(0.0, 100.0, 0.0, 100.0, -1.0 , 0.0);
 	}
 
 
@@ -29,6 +30,7 @@ void draw_hero()
 	glColor3f(0.7,1.0,1.0);
 	glRectf(10,49.8,19.8,44.8);//body
 	}
+	
 
 void renderBitmapString(float x,float y,float z,void *font,char*string)
 	{
@@ -45,10 +47,6 @@ void display(void)
 	if(
 	(i==800||i==-700) //original i value ws 730, i am changing it 
 	//top and bottom checking
-	||
-	( ((int)b1x==10||(int)b1x==7||(int)b1x==4||(int)b1x==1)
-	&&(int)b1y<53+(int)hm&&(int)b1y+35>53+(int)hm)
-	// propeller front checking
 	||
 	( ((int)b1x==9||(int)b1x==3||(int)b1x==6) &&(int)b1y<45+(int)hm&&(int)b1y+35>45+(int)hm)
 	||
@@ -69,7 +67,7 @@ void display(void)
 		printf("%s scored %s" ,name,scs);
 		printf("\n\nClose the console window to exit...\n");
 		//getch();
-		//sleep(5);
+		sleep(5);
 		exit(0);
 		}
 	else if(wflag==1)//WelcomeScreen
@@ -84,7 +82,7 @@ void display(void)
 		glColor3f(1.0,1.0,0.0);
 		renderBitmapString(20,65,0,GLUT_BITMAP_8_BY_13,"A mini project for Computer Graphics");
 		renderBitmapString(45.5,70,0,GLUT_BITMAP_TIMES_ROMAN_24,"OBSTACLE");
-		glColor3f(1.0,0.0,0.0);
+		glColor3f(1.0,1.0,1.0);
 		renderBitmapString(40,45,0,GLUT_BITMAP_TIMES_ROMAN_24,"Welcome");
 		renderBitmapString(53,45,0,GLUT_BITMAP_TIMES_ROMAN_24,name);
 		renderBitmapString(43,30,0,GLUT_BITMAP_TIMES_ROMAN_24,"Press any key to start");
@@ -95,6 +93,7 @@ void display(void)
 		}
 	else
 		{
+					
 		//on every increase by 50 in score in each level
 		if(sci%50==0&&lflag==1)
 			{
@@ -139,7 +138,7 @@ void display(void)
 			b1x-=bspd;
 		//within the projection volume dec its x value by block_speed
 		glTranslatef(b1x,-hm,0.0);
-		glColor3f(1.0,0.0,0.0);
+		glColor3f(1.0,1.0,1.0);
 		glRectf(b1x,b1y,b1x+5,b1y+35);//block 1
 		glPopMatrix();
 		glutSwapBuffers();
@@ -163,8 +162,15 @@ void moveHeliD()
 
 void keys(unsigned char key,int x,int y)
 	{
-	if(key=='w') glutIdleFunc(moveHeliU);
-	if(key=='s') glutIdleFunc(moveHeliD);
+
+	if(key=='w') {
+
+	glutIdleFunc(moveHeliU);
+	}
+	
+	
+	if(key=='s') {
+	glutIdleFunc(moveHeliD);}
 	}
 	
 int main(int argc, char** argv)
