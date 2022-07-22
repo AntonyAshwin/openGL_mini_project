@@ -1,24 +1,27 @@
+
 #include<stdlib.h>
 #include<GL/glut.h>
 #include<time.h>
 #include<stdio.h>
 
-float bspd=0.08; // block dx value
+float bspd=0.08; //block dx value
 char name[25];
 
-float b1x=60.0,b1y=0;//block 1 init position
-float hm=0.5;//copter moving dy value
+float b1x=60.0,b1y=0;    // block x axis is speed
+float hm=0.9;   // my obstacle up down speed
 int i=0,sci=1;float scf=1; // for increment score score_int score_flag
 char scs[20],slevel[20];
 
 //to store score_string using itoa() and level as well
+
+
 int level=1,lflag=1,wflag=1; //level_flag & welcome_flag init w/ 1void init(void)
 
 
 void init(void){
 	srand(time(0));
 	b1y=(rand()%45)+10;//b/w 10 to 44
-	glClearColor (0.0, 0.0, 0.7, 0.3);   //  modified this
+	glClearColor (0.0, 0.0, 0.7, 0.3);   // bg color
 	glShadeModel (GL_SMOOTH);
 	glLoadIdentity ();
 	glOrtho(0.0, 100.0, 0.0, 100.0, -1.0 , 0.0);
@@ -51,7 +54,7 @@ void display(void)
 	( ((int)b1x==9||(int)b1x==3||(int)b1x==6) &&(int)b1y<45+(int)hm&&(int)b1y+35>45+(int)hm)
 	||
 	( ((int)b1x==0) && (int)b1y<46+(int)hm&&(int)b1y+35>46+(int)hm))
-	// lower tail checking
+	// lower  checking
 		{
 		glColor3f(0.0,0.0,1.0);
 		glRectf(0.0,0.0,100.0,100.0);
@@ -81,7 +84,7 @@ void display(void)
 		renderBitmapString(41,80,0,GLUT_BITMAP_HELVETICA_12,"Bangalore, Karnataka");
 		glColor3f(1.0,1.0,0.0);
 		renderBitmapString(20,65,0,GLUT_BITMAP_8_BY_13,"A mini project for Computer Graphics");
-		renderBitmapString(45.5,70,0,GLUT_BITMAP_TIMES_ROMAN_24,"OBSTACLE");
+		renderBitmapString(45.5,70,0,GLUT_BITMAP_TIMES_ROMAN_24,"1MJ19CS706");
 		glColor3f(1.0,1.0,1.0);
 		renderBitmapString(40,45,0,GLUT_BITMAP_TIMES_ROMAN_24,"Welcome");
 		renderBitmapString(53,45,0,GLUT_BITMAP_TIMES_ROMAN_24,name);
@@ -123,9 +126,9 @@ void display(void)
 		//from int to char convertion to display score
 		renderBitmapString(20,3,0,GLUT_BITMAP_TIMES_ROMAN_24,scs);
 		glTranslatef(0.0,hm,0.0);
-		// hm(=dy) changes occur by mouse func
+		
 		draw_hero();
-		//code for helicopter//if wall move towards left & get out of projection volume
+		//code for OBSTACLE//if wall move towards left & get out of projection volume
 		if(b1x<-10)
 			{
 			b1x=50;
@@ -145,14 +148,14 @@ void display(void)
 		glFlush();}
 	}
 	
-void moveHeliU(void)
+void moveHeroU(void)
 	{
 	hm+=0.05;
 	i++;
 	glutPostRedisplay();
 	}
 	
-void moveHeliD()
+void moveHeroD()
 	{
 	hm-=0.05;
 	i--;
@@ -165,12 +168,12 @@ void keys(unsigned char key,int x,int y)
 
 	if(key=='w') {
 
-	glutIdleFunc(moveHeliU);
+	glutIdleFunc(moveHeroU);
 	}
 	
 	
 	if(key=='s') {
-	glutIdleFunc(moveHeliD);}
+	glutIdleFunc(moveHeroD);}
 	}
 	
 int main(int argc, char** argv)
